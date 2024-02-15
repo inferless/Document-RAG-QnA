@@ -12,7 +12,7 @@ class InferlessPythonModel:
         #define the index name of Pinecone, embedding model name, LLM model name, and pinecone API KEY
         index_name = "documents"
         embed_model_id = "sentence-transformers/all-MiniLM-L6-v2"
-        llm_model_id = "microsoft/phi-2"
+        llm_model_id = "NousResearch/Nous-Hermes-llama-2-7b"
         os.environ["PINECONE_API_KEY"] = "31b47ff0-5126-4f21-9d55-8ea2714e1a7d"
 
         # Initialize the model for embeddings
