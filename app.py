@@ -21,8 +21,8 @@ class InferlessPythonModel:
         retriever = vectorstore.as_retriever()
 
         # Initialize the LLM
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
-        model = AutoModelForCausalLM.from_pretrained(model_id,trust_remote_code=True,device_map="cuda")
+        tokenizer = AutoTokenizer.from_pretrained(llm_model_id)
+        model = AutoModelForCausalLM.from_pretrained(llm_model_id,trust_remote_code=True,device_map="cuda")
         pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=100)
         llm = HuggingFacePipeline(pipeline=pipe)
 
