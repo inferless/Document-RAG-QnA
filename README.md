@@ -1,8 +1,10 @@
-# Semantic Search Application
- In this tutorial, we'll build a semantic search app using Inferless and Pinecone.
+# PDF-RAG-QnA
+ In this tutorial, we'll build a RAG system for document QnA where users can ask questions from PDFs.
+ This is the second part of the tutorial where we will deploy the Question and Answering application.
 ---
 ## Architecture
-![Architecture Diagram](https://i.postimg.cc/mTPGB0H4/Untitled-design-1.png?dl=1)
+![Architecture Diagram](https://i.postimg.cc/x0mwt2HQ/Untitled-design-2.png?dl=1)
+- **LANGCHIN**. We will use LangChain to connect all the components.
 - **INFERLESS**. We will use it for serverless deployment of the sentence embedding model.
 - **PINECONE**. We will store all the vector embeddings in the pinecone database. Also we will query into the pinecone database for finding the required document.
 
@@ -46,14 +48,13 @@ curl --location '<your_inference_url>' \
                     "inputs": [
                       {
                         "data": [
-                          "Where can I get good Chinese food?"
+                          "What is PPO?"
                         ],
-                        "name": "sentences",
+                        "name": "question",
                         "shape": [
                           1
                         ],
                         "datatype": "BYTES"
-                      }type": "BYTES"
                       }
                     ]
                   }
@@ -70,7 +71,9 @@ Open the `app.py` file. This contains the main code for inference. It has three 
 
 ```python
 def infer(self, inputs):
-    prompt = inputs["prompt"]
+      question = inputs["question"]
+      result = self.chain.invoke(question)
+      return {"generated_result":result}
 ```
 
 **Finalize** - This function is used to perform any cleanup activity for example you can unload the model from the gpu by setting `self.pipe = None`.
