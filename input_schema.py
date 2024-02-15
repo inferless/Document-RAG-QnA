@@ -1,8 +1,8 @@
 INPUT_SCHEMA = {
-    "pdf_url": {
+    "question": {
         'datatype': 'STRING',
         'required': True,
         'shape': [1],
-        'example': ["https://arxiv.org/pdf/2305.18290.pdf"]
+        'example': ["What is DPO?"]
     }
 }
