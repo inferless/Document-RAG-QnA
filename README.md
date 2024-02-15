@@ -1,6 +1,7 @@
 # PDF-RAG-QnA
- In this tutorial, we'll build a RAG system for document QnA where users can ask questions from PDFs.
+ - In this tutorial, we'll build a RAG system for document QnA where users can ask questions from PDFs.
  This is the second part of the tutorial where we will deploy the Question and Answering application.
+ - Check out the first part here: https://github.com/inferless/Document-RAG-Upload
 ---
 ## Architecture
 ![Architecture Diagram](https://i.postimg.cc/x0mwt2HQ/Untitled-design-2.png?dl=1)
