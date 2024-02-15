@@ -1,0 +1,23 @@
+build:
+  cuda_version: "12.1.1"
+  system_packages:
+    - "libssl-dev"
+    - "libsm6"
+    - "libxext6"
+    - "libxrender-dev"
+  python_packages:
+    - "langchain==0.1.7"
+    - "langchain-pinecone==0.0.2"
+    - "pypdf==4.0.1"
+    - "unstructured==0.12.4"
+    - "sentence-transformers==2.3.1"
+    - "pinecone-client==3.0.3"
+    - "huggingface-hub==0.20.3"
+    - "pdf2image==1.17.0"
+    - "pdfminer==20191125"
+    - "pdfminer.six==20221105"
+    - "pillow_heif==0.15.0"
+    - "unstructured-inference==0.7.24"
+    - "pikepdf==8.12.0"
+    - "transformers==4.37.2"
+    - "accelerate==0.27.2"

@@ -1,0 +1,14 @@
+{
+  "inputs": [
+    {
+      "data": [
+        "Where can I get good chinese food?"
+      ],
+      "name": "sentences",
+      "shape": [
+        1
+      ],
+      "datatype": "BYTES"
+    }
+  ]
+}
