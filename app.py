@@ -1,29 +1,47 @@
 import os
-from langchain.document_loaders import OnlinePDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_pinecone import Pinecone
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnableParallel, RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 class InferlessPythonModel:
     def initialize(self):
-        #define the index name of Pinecone, embedding model name and pinecone API KEY
+        #define the index name of Pinecone, embedding model name, LLM model name, and pinecone API KEY
         index_name = "documents"
         embed_model_id = "sentence-transformers/all-MiniLM-L6-v2"
+        llm_model_id = "NousResearch/Nous-Hermes-Llama2-13b"
         os.environ["PINECONE_API_KEY"] = "31b47ff0-5126-4f21-9d55-8ea2714e1a7d"
 
-        #Initialize the embedding model, text_splitter & pinecone
+        # Initialize the model for embeddings
         embeddings=HuggingFaceEmbeddings(model_name=embed_model_id)
-        self.text_splitter=RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
-        self.pinecone = Pinecone(index_name=index_name, embedding=embeddings)
+        vectorstore = Pinecone.from_existing_index(index_name=index_name, embedding=embeddings)
+        retriever = vectorstore.as_retriever()
 
-    def infer(self, inputs):
-      pdf_link = inputs["pdf_url"]
-      loader = OnlinePDFLoader(pdf_link)
-      data = loader.load()
-      documents = self.text_splitter.split_documents(data)
-      response = self.pinecone.add_documents(documents)
+        # Initialize the LLM
+        tokenizer = AutoTokenizer.from_pretrained(model_id)
+        model = AutoModelForCausalLM.from_pretrained(model_id,trust_remote_code=True,device_map="cuda")
+        pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=100)
+        llm = HuggingFacePipeline(pipeline=pipe)
+
+        # Define the chat template, and chain for retrival
+        template = """Answer the question based only on the following context:
+                      {context}
+                      Question: {question}
+                      """
+        prompt = ChatPromptTemplate.from_template(template)
+        self.chain = (
+          RunnableParallel({"context": retriever, "question": RunnablePassthrough()})
+          | prompt
+          | llm
+          | StrOutputParser())
       
-      return {"result":response}
+    def infer(self, inputs):
+      question = inputs["question"]
+      result = self.chain.invoke(question)
+      return {"generated_result":result}
 
     def finalize(self):
       pass
