@@ -41,6 +41,7 @@ class InferlessPythonModel:
     def infer(self, inputs):
       question = inputs["question"]
       result = self.chain.invoke(question)
+      text = result.split("Explanation:")[0][8:].split("\n")[0]
       return {"generated_result":result}
 
     def finalize(self):
