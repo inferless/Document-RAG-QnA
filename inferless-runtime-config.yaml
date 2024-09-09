@@ -1,10 +1,7 @@
 build:
   cuda_version: "12.1.1"
   system_packages:
-    - "libssl-dev"
-    - "libsm6"
-    - "libxext6"
-    - "libxrender-dev"
+    - "libgl1-mesa-glx"
   python_packages:
     - "langchain==0.1.7"
     - "langchain-pinecone==0.0.2"
