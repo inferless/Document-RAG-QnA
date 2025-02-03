@@ -9,7 +9,6 @@ build:
     - "unstructured==0.12.4"
     - "sentence-transformers==2.3.1"
     - "pinecone-client==3.0.3"
-    - "huggingface-hub==0.20.3"
     - "pdf2image==1.17.0"
     - "pdfminer==20191125"
     - "pdfminer.six==20221105"
@@ -18,3 +17,4 @@ build:
     - "pikepdf==8.12.0"
     - "transformers==4.37.2"
     - "accelerate==0.27.2"
+    - "huggingface-hub==0.25.2"
