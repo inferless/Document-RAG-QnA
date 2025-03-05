@@ -1,4 +1,7 @@
 import os
+os.environ["HF_HUB_ENABLE_HF_TRANSFER"]='1'
+from huggingface_hub import snapshot_download
+import os
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_pinecone import Pinecone
 from langchain_core.prompts import ChatPromptTemplate
@@ -13,6 +16,8 @@ class InferlessPythonModel:
         index_name = "documents"
         embed_model_id = "sentence-transformers/all-MiniLM-L6-v2"
         llm_model_id = "NousResearch/Nous-Hermes-llama-2-7b"
+        snapshot_download(repo_id=embed_model_id,allow_patterns=["*.safetensors"])
+        snapshot_download(repo_id=llm_model_id,allow_patterns=["*.safetensors"])
         os.environ["PINECONE_API_KEY"] = "YOUR_PINECONE_API_KEY"
 
         # Initialize the model for embeddings
